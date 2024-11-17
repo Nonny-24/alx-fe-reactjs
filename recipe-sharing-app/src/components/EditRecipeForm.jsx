@@ -8,6 +8,7 @@ const EditRecipeForm = () => {
   const recipe = useRecipeStore((state) =>
     state.recipes.find((recipe) => recipe.id === recipeId)
   );
+  if (!recipe) return <p>Recipe not found.</p>;
   const updateRecipe = useRecipeStore((state) => state.updateRecipe);
 
   const [title, setTitle] = useState(recipe.title);
@@ -38,6 +39,7 @@ const EditRecipeForm = () => {
           onChange={(e) => setDescription(e.target.value)}
         ></textarea>
       </div>
+      <div>Edit form for {recipe.title}</div>;
       <button type="submit">Save Changes</button>
     </form>
   );
