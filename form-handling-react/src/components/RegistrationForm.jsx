@@ -7,18 +7,32 @@ const RegistrationForm = () => {
     password: '',
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!username) newErrors.username = 'Username is required';
+    if (!email) newErrors.email = 'Email is required';
+    if (!password) newErrors.password = 'Password is required';
+
+    setErrors(newErrors);
+
+    // Return true if no errors, false otherwise
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!username || !email || !password) {
-      alert('All fields are required');
-      return;
+
+    if (validateForm()) {
+      console.log('Form submitted:', formData);
+      setErrors({}); // Clear errors after successful validation
     }
-    console.log('Form submitted:', formData);
   };
 
   return (
@@ -29,9 +43,10 @@ const RegistrationForm = () => {
           type="text"
           id="username"
           name="username"
-          value={username} 
+          value={username}
           onChange={handleChange}
         />
+        {errors.username && <div style={{ color: 'red' }}>{errors.username}</div>}
       </div>
       <div>
         <label htmlFor="email">Email:</label>
@@ -42,6 +57,7 @@ const RegistrationForm = () => {
           value={email}
           onChange={handleChange}
         />
+        {errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}
       </div>
       <div>
         <label htmlFor="password">Password:</label>
@@ -49,9 +65,10 @@ const RegistrationForm = () => {
           type="password"
           id="password"
           name="password"
-          value={password} 
+          value={password}
           onChange={handleChange}
         />
+        {errors.password && <div style={{ color: 'red' }}>{errors.password}</div>}
       </div>
       <button type="submit">Register</button>
     </form>
