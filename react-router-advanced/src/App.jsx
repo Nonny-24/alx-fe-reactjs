@@ -1,20 +1,19 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Profile from './components/Profile';
+import Post from './components/Post'; 
 
-const App = () => {
+function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile/*" element={<Profile />} />
-        <Route path="*" element={<Navigate to="/" />} />
-        <Route path="/post/:id" element={<BlogPost />} />
+        <Route path="/blog/:id" element={<Post />} /> {/* Dynamic route for blog post */}
       </Routes>
     </Router>
-    
   );
-};
+}
 
 export default App;
