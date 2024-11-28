@@ -1,4 +1,5 @@
 import { Route, Redirect } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const { isAuthenticated } = useAuth();  
