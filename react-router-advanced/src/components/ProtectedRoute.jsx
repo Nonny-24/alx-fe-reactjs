@@ -1,8 +1,20 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
-const ProtectedRoute = ({ isAuthenticated, children }) => {
-  return isAuthenticated ? children : <Navigate to="/" />;
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  const { isAuthenticated } = useAuth();  
+
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        isAuthenticated ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/login" /> 
+        )
+      }
+    />
+  );
 };
 
 export default ProtectedRoute;
