@@ -10,7 +10,7 @@ const AddRecipeForm = () => {
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; 
     setFormData({ ...formData, [name]: value });
   };
 
@@ -53,7 +53,7 @@ const AddRecipeForm = () => {
             id="title"
             name="title"
             value={formData.title}
-            onChange={handleChange}
+            onChange={handleChange} 
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
           {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
@@ -67,7 +67,7 @@ const AddRecipeForm = () => {
             id="ingredients"
             name="ingredients"
             value={formData.ingredients}
-            onChange={handleChange}
+            onChange={handleChange} 
             rows="4"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           ></textarea>
@@ -84,7 +84,7 @@ const AddRecipeForm = () => {
             id="steps"
             name="steps"
             value={formData.steps}
-            onChange={handleChange}
+            onChange={handleChange} 
             rows="6"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           ></textarea>
