@@ -1,26 +1,55 @@
 import React, { useState } from 'react';
+import { fetchUserData } from '../services/githubService';
 
-const Search = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+const Search = () => {
+  const [username, setUsername] = useState('');
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleInputChange = (e) => {
+    setUsername(e.target.value);
+  };
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (searchTerm.trim()) {
-      onSearch(searchTerm);
+    setLoading(true);
+    setError('');
+    setUserData(null);
+    try {
+      const data = await fetchUserData(username);
+      setUserData(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleFormSubmit}>
         <input
           type="text"
-          placeholder="Search GitHub username"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          value={username}
+          onChange={handleInputChange}
+          placeholder="Enter GitHub username"
         />
         <button type="submit">Search</button>
       </form>
+
+      {loading && <p>Loading...</p>}
+
+      {error && <p>{error}</p>}
+      {userData && (
+        <div>
+          <img src={userData.avatar_url} alt={`${userData.login}'s avatar`} width="100" />
+          <h2>{userData.login}</h2>
+          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
+            View Profile
+          </a>
+        </div>
+      )}
     </div>
   );
 };
