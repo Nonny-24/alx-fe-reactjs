@@ -1,56 +1,49 @@
 import React, { useState } from 'react';
 import { fetchUserData } from '../services/githubService';
 
-const Search = () => {
-  const [username, setUsername] = useState('');
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+const SearchForm = ({ onSearch }) => {
+  const [username, setUsername] = useState("");
+  const [location, setLocation] = useState("");
+  const [repos, setRepos] = useState("");
 
-  const handleInputChange = (e) => {
-    setUsername(e.target.value);
-  };
-
-  const handleFormSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
-    setUserData(null);
-    try {
-      const data = await fetchUserData(username);
-      setUserData(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    onSearch({ username, location, repos });
   };
 
   return (
-    <div>
-      <form onSubmit={handleFormSubmit}>
-        <input
-          type="text"
-          value={username}
-          onChange={handleInputChange}
-          placeholder="Enter GitHub username"
-        />
-        <button type="submit">Search</button>
-      </form>
-
-      {loading && <p>Loading...</p>}
-
-      {error && <p>{error}</p>}
-      {userData && (
-        <div>
-          <img src={userData.avatar_url} alt={`${userData.login}'s avatar`} width="100" />
-          <h2>{userData.login}</h2>
-          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
-            View Profile
-          </a>
-        </div>
-      )}
-    </div>
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col md:flex-row gap-4 p-4 bg-gray-100 rounded-md shadow-md"
+    >
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        className="p-2 border rounded w-full md:w-1/3"
+      />
+      <input
+        type="text"
+        placeholder="Location"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+        className="p-2 border rounded w-full md:w-1/3"
+      />
+      <input
+        type="number"
+        placeholder="Minimum Repos"
+        value={repos}
+        onChange={(e) => setRepos(e.target.value)}
+        className="p-2 border rounded w-full md:w-1/3"
+      />
+      <button
+        type="submit"
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      >
+        Search
+      </button>
+    </form>
   );
 };
 
