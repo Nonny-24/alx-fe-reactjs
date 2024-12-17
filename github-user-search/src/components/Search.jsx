@@ -6,20 +6,43 @@ const Search = ({ onSearch }) => {
   const [location, setLocation] = useState("");
   const [repos, setRepos] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSearch({
-      username: username.trim(),
-      location: location.trim(),
-      repos: repos.trim(),
+
+    const searchCriteria = [
+      { key: "username", value: username.trim() },
+      { key: "location", value: location.trim() },
+      { key: "repos", value: repos.trim() },
+    ].filter((item) => item.value); 
+
+    if (searchCriteria.length) {
+      const queryString = searchCriteria
+        .map((item) => `${item.key}:${item.value}`)
+        .join(" ");
+
+      const response = await fakeApiCall(queryString);
+      onSearch(response);
+    }
+  };
+
+  const fakeApiCall = async (query) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          message: `Results for: ${query}`,
+        });
+      }, 1000);
     });
   };
 
   return (
     <form onSubmit={handleSubmit} className="p-4 bg-gray-100 rounded-md shadow-md">
       <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-1">Username:</label>
+        <label className="block text-gray-700 font-bold mb-1" htmlFor="username">
+          Username:
+        </label>
         <input
+          id="username"
           type="text"
           placeholder="Enter GitHub username"
           value={username}
@@ -29,8 +52,11 @@ const Search = ({ onSearch }) => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-1">Location:</label>
+        <label className="block text-gray-700 font-bold mb-1" htmlFor="location">
+          Location:
+        </label>
         <input
+          id="location"
           type="text"
           placeholder="Enter location"
           value={location}
@@ -40,8 +66,11 @@ const Search = ({ onSearch }) => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-1">Minimum Repos:</label>
+        <label className="block text-gray-700 font-bold mb-1" htmlFor="repos">
+          Minimum Repos:
+        </label>
         <input
+          id="repos"
           type="number"
           placeholder="e.g., 10"
           value={repos}
