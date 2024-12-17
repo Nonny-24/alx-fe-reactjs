@@ -1,45 +1,58 @@
 import React, { useState } from 'react';
 import { fetchUserData } from '../services/githubService';
 
-const SearchForm = ({ onSearch }) => {
+const Search = ({ onSearch }) => {
   const [username, setUsername] = useState("");
   const [location, setLocation] = useState("");
   const [repos, setRepos] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch({ username, location, repos });
+    onSearch({
+      username: username.trim(),
+      location: location.trim(),
+      repos: repos.trim(),
+    });
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col md:flex-row gap-4 p-4 bg-gray-100 rounded-md shadow-md"
-    >
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        className="p-2 border rounded w-full md:w-1/3"
-      />
-      <input
-        type="text"
-        placeholder="Location"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-        className="p-2 border rounded w-full md:w-1/3"
-      />
-      <input
-        type="number"
-        placeholder="Minimum Repos"
-        value={repos}
-        onChange={(e) => setRepos(e.target.value)}
-        className="p-2 border rounded w-full md:w-1/3"
-      />
+    <form onSubmit={handleSubmit} className="p-4 bg-gray-100 rounded-md shadow-md">
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-1">Username:</label>
+        <input
+          type="text"
+          placeholder="Enter GitHub username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-1">Location:</label>
+        <input
+          type="text"
+          placeholder="Enter location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-1">Minimum Repos:</label>
+        <input
+          type="number"
+          placeholder="e.g., 10"
+          value={repos}
+          onChange={(e) => setRepos(e.target.value)}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+
       <button
         type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        className="w-full bg-blue-500 text-white font-bold py-2 rounded hover:bg-blue-600"
       >
         Search
       </button>
